@@ -15,7 +15,6 @@ from itertools import chain
 class PedidoComidaView(APIView):
     def get(self, request, format=None):
         time = timezone.now() - timedelta(hours=12) # brazil time
-        print(time.strftime("%d/%m/%Y, %H:%M:%S"))
 
         h_10_00 = datetime(time.year, time.month, time.day, 10, 0, tzinfo=time.tzinfo)
         h_11_59 = datetime(time.year, time.month, time.day, 11, 59, tzinfo=time.tzinfo)
@@ -24,11 +23,11 @@ class PedidoComidaView(APIView):
 
         if time > h_11_59 and time < h_23_59:
             pedidos = Pedido.objects.filter(data__range=(previous_day_23_59, h_11_59))
-            print("pedidos dessa tarde", pedidos)
+
         elif time < h_11_59:
             previous_11_59 = datetime(time.year, time.month, time.day-1, 11, 59, tzinfo=time.tzinfo)
             pedidos = Pedido.objects.filter(data__range=(previous_11_59, previous_day_23_59))
-            print("pedidos dessa manhã", pedidos)
+
 
         pedidos_serializer = PedidoSerializer(pedidos, many=True) 
         return Response({"detail":"success", "pedidos":pedidos_serializer.data}, status=status.HTTP_200_OK)
@@ -75,13 +74,13 @@ class PedidoView(APIView):
             return Response({"detail":"success", "pedido":pedido_serializer.data}, status=status.HTTP_200_OK)
         
         pedidos = Pedido.objects.all()
-        print(pedidos)
+
         pedidos_serializer = PedidoSerializer(pedidos, many=True) 
         return Response({"detail":"success", "pedidos":pedidos_serializer.data}, status=status.HTTP_200_OK)
 
     def post(self, request, format=None):
-        time = timezone.now() + timedelta(hours=12)
-        print(time.strftime("%d/%m/%Y, %H:%M:%S"))
+        time = timezone.now() - timedelta(hours=10)
+
         Pedido.objects.create(data=time)
         return Response({"ok":"ok"}, status=status.HTTP_200_OK)
 
@@ -117,7 +116,7 @@ class RelatorioView(APIView):
         dias = {"segunda":0, "terca":1, "quarta":2, "quinta":3, "sexta":4, "sabado":5, "domingo":6}
         dia = dias[dia]
         time = timezone.now() - timedelta(hours=3)
-        print(time)
+
         if dia > time.weekday():
             day_to_fetch_start = datetime(time.year, time.month, time.day+dia, 0, 0, 0, tzinfo=time.tzinfo)
         elif dia == 0:
@@ -171,7 +170,6 @@ class RelatorioView(APIView):
         #                 dicti[key].append(0)
         #                 pass
                 
-        print(dicti)
                 
 
         return dicti
