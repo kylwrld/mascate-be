@@ -50,7 +50,7 @@ class PedidoComidaView(APIView):
         time = timezone.now() - timedelta(hours=3)
         pedido = Pedido.objects.create(data=time)
 
-        total = 0
+        # total = 0
         for comida in request.data["comidas"]:
             comida_instance = get_object_or_404(Comida, identificador_nome=comida["identificador_nome"])
             pedidoComida_serializer = PedidoComidaSerializer(data={"pedido_id":pedido.id, 
@@ -59,9 +59,9 @@ class PedidoComidaView(APIView):
    
             pedidoComida_serializer.is_valid(raise_exception=True)
             pedidocomida = pedidoComida_serializer.save()
-            total += comida_instance.preco
+            # total += comida_instance.preco
 
-        pedido.total = total
+        # pedido.total = total
         pedido.save()
 
         pedido_serializer = PedidoSerializer(pedido)
