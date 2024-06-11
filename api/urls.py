@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path("api/pedidocomida/", views.PedidoComidaView.as_view(), name="pedido_comida"),
+    path("api/pedidocomida/<int:hour>/", views.PedidoComidaView.as_view(), name="pedido_comida"),
     path("api/comida/", views.ComidaView.as_view(), name="comida"),
     path("api/pedido/", views.PedidoView.as_view(), name="pedido"),
     path("api/pedido/<int:pk>/", views.PedidoView.as_view(), name="pedido"),

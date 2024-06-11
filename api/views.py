@@ -45,8 +45,11 @@ class PedidoComidaView(APIView):
     #               }
     #           ]
     #   }
-    def post(self, request, format=None):
-        time = timezone.now() - timedelta(hours=7)
+    def post(self, request, hour=None, format=None):
+        time = timezone.now() - timedelta(hours=3)
+        if hour is not None:
+            time = timezone.now() + timedelta(hours=hour)
+
         pedido = Pedido.objects.create(data=time)
 
         # total = 0
@@ -103,8 +106,6 @@ class ComidaView(APIView):
 from django.db.models import Sum
 
 class RelatorioView(APIView):
-    dias = []
-    
     def get(self, request, dia=None, format=None):
         if dia is not None:
             return Response({"pedidos":self.dia(request, format, dia)})
@@ -118,9 +119,8 @@ class RelatorioView(APIView):
         time = timezone.now() - timedelta(hours=3)
 
         if dia > time.weekday():
-            day_to_fetch_start = datetime(time.year, time.month, time.day+dia, 0, 0, 0, tzinfo=time.tzinfo)
+            day_to_fetch_start = datetime(time.year, time.month, time.day+((dia - time.weekday())), 0, 0, 0, tzinfo=time.tzinfo)
         elif dia == 0:
-
             day_to_fetch_start = datetime(time.year, time.month, time.day-time.weekday(), 0, 0, 0, tzinfo=time.tzinfo)
         else:
             day_to_fetch_start = datetime(time.year, time.month, time.day-((time.weekday() - dia)), 0, 0, 0, tzinfo=time.tzinfo)
