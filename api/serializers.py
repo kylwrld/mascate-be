@@ -5,6 +5,7 @@ class ComidaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comida
         fields = ["nome", "identificador_nome", "categoria", "preco"]
+        optional_fields = ['preco', ]
 
 class PedidoComidaSerializer(serializers.ModelSerializer):
     pedido_id = serializers.IntegerField()

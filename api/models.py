@@ -14,7 +14,7 @@ class Comida(models.Model):
     nome = models.CharField(max_length=150, unique=True)
     identificador_nome = models.CharField(max_length=150, unique=True)
     categoria = models.CharField(max_length=100)
-    preco = models.DecimalField(max_digits=5, decimal_places=2)
+    preco = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     criado_em = models.DateTimeField(auto_now_add=True)
 
 class PedidoComida(models.Model):
