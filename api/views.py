@@ -79,8 +79,8 @@ class PedidoView(APIView):
         return Response({"detail":"success", "pedidos":pedidos_serializer.data}, status=status.HTTP_200_OK)
 
     def post(self, request, format=None):
-        time = timezone.now() - timedelta(hours=10)
-
+        time = timezone.now() - timedelta(hours=13)
+        print(time)
         Pedido.objects.create(data=time)
         return Response({"ok":"ok"}, status=status.HTTP_200_OK)
 
