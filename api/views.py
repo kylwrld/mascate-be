@@ -14,7 +14,7 @@ from itertools import chain
 
 class PedidoComidaView(APIView):
     def get(self, request, format=None):
-        time = timezone.now() - timedelta(hours=12) # brazil time
+        time = timezone.now() - timedelta(hours=3) # brazil time
 
         h_10_00 = datetime(time.year, time.month, time.day, 10, 0, tzinfo=time.tzinfo)
         h_11_59 = datetime(time.year, time.month, time.day, 11, 59, tzinfo=time.tzinfo)
