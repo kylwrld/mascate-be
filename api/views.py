@@ -48,7 +48,7 @@ class PedidoComidaView(APIView):
     def post(self, request, hour=None, format=None):
         time = timezone.now() - timedelta(hours=3)
         if hour is not None:
-            time = timezone.now() + timedelta(hours=hour)
+            time -= timedelta(hours=hour)
 
         pedido = Pedido.objects.create(data=time)
 
@@ -86,7 +86,13 @@ class PedidoView(APIView):
 
         Pedido.objects.create(data=time)
         return Response({"ok":"ok"}, status=status.HTTP_200_OK)
-
+    
+    def patch(self, request, pk, format=None):
+        pedido = get_object_or_404(Pedido, pk=pk)
+        pedido_serializer = PedidoSerializer(pedido, data=request.data, partial=True)
+        pedido_serializer.is_valid(raise_exception=True)
+        pedido = pedido_serializer.save()
+        return Response({"detail":"success", "pedido":pedido_serializer.data}, status=status.HTTP_201_CREATED)
 
 class ComidaView(APIView):
     def get(self, request, format=None):

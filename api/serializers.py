@@ -33,7 +33,8 @@ class PedidoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Pedido
-        fields = ["id", "data", "total", "pedidoscomida"]
+        fields = ["id", "data", "total", "status", "pedidoscomida"]
+        # read_only_fields = ('status',)
 
 class RelatorioSerializer(serializers.ModelSerializer):
     nome = serializers.SerializerMethodField()
